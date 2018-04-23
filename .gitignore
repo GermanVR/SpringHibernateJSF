@@ -1,0 +1,10 @@
+#Se ignora la carpeta target
+/target
+/build
+
+#Omitimos los class que se generan cuando se compila
+*.classes
+.settings
+.classpath
+.project
+

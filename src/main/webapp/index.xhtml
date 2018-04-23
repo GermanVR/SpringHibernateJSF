@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>JSF 2.0 Hello World</title>
+</h:head>
+<h:body>
+	<h:messages />
+	<h2>JSF 2.0 Hello World Example - hello.xhtml</h2>
+	<h:form>
+		<h:commandButton actionListener="#{personaBean.obtieneTodos }" value="Listar" />
+		<h:dataTable value="#{personaBean.lPersona}" var="per">
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Nombre" />
+				</f:facet>
+				<h:outputLabel value="#{per.nombre }" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Apellido Materno" />
+				</f:facet>
+				<h:outputLabel value="#{per.apellidom }" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Apellido Paterno" />
+				</f:facet>
+				<h:outputLabel value="#{per.apellidop }" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Edad" />
+				</f:facet>
+				<h:outputLabel value="#{per.edad }" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Sexo" />
+				</f:facet>
+				<h:outputLabel value="#{per.sexo }" />
+			</h:column>
+			<h:dataTable value="#{per.direccion}" var="dir">
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Sexo" />
+					</f:facet>
+					<h:outputLabel value="#{dir.nombre }" />
+				</h:column>
+
+			</h:dataTable>
+		</h:dataTable>
+	</h:form>
+</h:body>
+</html>
