@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>JSF 2.0 Hello World</title>
+</h:head>
+<h:body>
+	<h2>Ingrese Usuario y Contraseña</h2>
+	<f:event listener="#{usuarioBean.limpiaUsuario()}" type="preRenderView"></f:event>
+
+	<h:form>
+		<h:messages />
+		<h:panelGrid columns="1">
+			<h:outputLabel value="Usuario" />
+			<h:inputText value="#{usuarioBean.usuario.user}" />
+			<h:outputLabel value="Contraseña" />
+			<h:inputText value="#{usuarioBean.usuario.password}" />
+		</h:panelGrid>
+		<h:commandButton action="#{usuarioBean.validaUsuario()}" value="Ingresar" />
+	</h:form>
+</h:body>
+</html>

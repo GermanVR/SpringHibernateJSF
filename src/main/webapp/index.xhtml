@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 
 <h:head>
 	<title>JSF 2.0 Hello World</title>
 </h:head>
 <h:body>
 	<h:messages />
-	<h2>JSF 2.0 Hello World Example - hello.xhtml</h2>
+	<f:event listener="#{usuarioBean.validaSession()}" type="preRenderView"></f:event>
 	<h:form>
+		<h2>Menu JSF</h2>
 		<h:commandButton actionListener="#{personaBean.obtieneTodos }" value="Listar" />
-		<h:dataTable value="#{personaBean.lPersona}" var="per">
+		<h:commandButton action="#{personaBean.agregarPersona() }" value="Agregar" />
+		<h:commandButton action="#{personaBean.verificaSession() }" value="verifica" />
+		<h:commandButton action="#{personaBean.cerrarSession() }" value="Salir" />
+		<h:dataTable value="#{personaBean.lPersona}" var="per" border="1" bgcolor="Lime" rendered="#{personaBean.lPersona.size() > 0 eq true }">
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Id Persona" />
+				</f:facet>
+				<h:outputLabel value="#{per.idPersona }" />
+			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputLabel value="Nombre" />
@@ -46,15 +56,38 @@
 				</f:facet>
 				<h:outputLabel value="#{per.sexo }" />
 			</h:column>
-			<h:dataTable value="#{per.direccion}" var="dir">
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Sexo" />
-					</f:facet>
-					<h:outputLabel value="#{dir.nombre }" />
-				</h:column>
 
-			</h:dataTable>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Direcciones" />
+				</f:facet>
+				<ui:repeat var="o" value="#{per.direccion}">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Ciudad:" />
+						<h:outputLabel value="#{o.ciudad }" />
+
+						<h:outputLabel value="CP:" />
+						<h:outputLabel value="#{o.codigoPostal}" />
+						<h:outputLabel value="Municipio:" />
+						<h:outputLabel value="#{o.municipio }" />
+						<h:outputLabel value="Colonia:" />
+						<h:outputLabel value="#{o.colonia }" />
+						<h:outputLabel value="Telefono:" />
+						<h:outputLabel value="#{o.telefono }" />
+						<h:outputLabel value="Calle:" />
+						<h:outputLabel value="#{o.calle }" />
+					</h:panelGrid>
+					<hr></hr>
+				</ui:repeat>
+
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputLabel value="Accion" />
+				</f:facet>
+				<h:commandButton action="#{personaBean.eliminar(per)}" value="Eliminar" />
+			</h:column>
 		</h:dataTable>
 	</h:form>
 </h:body>

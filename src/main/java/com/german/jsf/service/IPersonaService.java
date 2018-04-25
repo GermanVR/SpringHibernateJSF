@@ -11,9 +11,12 @@ public interface IPersonaService {
 
 	public Persona obtienePorId(long id);
 
+	public void guardaPersona(Persona o) throws SQLException;
+
 	public Persona actualizar(Persona p) throws SQLException;
 
 	public void eliminar(long id) throws SQLException;
 
 	public Persona obtieneDireccion(long id);
+
 }

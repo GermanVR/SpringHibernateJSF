@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>Agregar Persona</title>
+</h:head>
+<h:body>
+
+	<h:form rendered="#{usuarioBean.validaSession()}">
+		<h:panelGrid columns="3">
+			<h:outputLabel value="Nombre" />
+			<h:inputText id="nombre" value="#{personaBean.persona.nombre}" required="true" label="Nombre">
+				<f:validateLength minimum="5" maximum="50" />
+			</h:inputText>
+			<h:messages for="nombre" />
+
+
+			<h:outputLabel value="Apellido Paterno" />
+			<h:inputText id="apellidop" value="#{personaBean.persona.apellidop}" required="true" label="Apellido Paterno">
+				<f:validateLength minimum="5" maximum="50" />
+			</h:inputText>
+			<h:messages for="apellidop" />
+
+			<h:outputLabel value="Apellido Materno" />
+			<h:inputText id="apellidom" value="#{personaBean.persona.apellidom}" required="true" label="Apelido Materno">
+				<f:validateLength minimum="5" maximum="50" />
+			</h:inputText>
+			<h:messages for="apellidom" />
+
+			<h:outputLabel value="Edad" />
+			<h:inputText id="edad" value="#{personaBean.persona.edad}" required="true" label="Edad">
+				<f:validateLongRange minimum="18" maximum="80" />
+			</h:inputText>
+			<h:messages for="edad" />
+
+			<h:outputLabel value="Sexo" />
+			<h:selectOneMenu id="sexo" value="#{personaBean.persona.sexo}">
+				<f:selectItem itemValue="H" itemLabel="Hombre" />
+				<f:selectItem itemValue="M" itemLabel="Mujer" />
+			</h:selectOneMenu>
+			<h:messages for="sexo" />
+			<h:commandButton action="#{personaBean.guardaPersona()}" value="Guardar" />
+			<h:commandButton action="index" immediate="true" value="Regresar" />
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

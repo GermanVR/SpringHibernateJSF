@@ -11,7 +11,7 @@ import com.german.jsf.entidad.Persona;
 import com.german.jsf.service.IPersonaService;
 
 @Service("personaService")
-public class PersonaService implements IPersonaService {
+public class PersonaServiceImp implements IPersonaService {
 
 	@Autowired
 	private IPersonaDao iPersonaDao;
@@ -40,6 +40,11 @@ public class PersonaService implements IPersonaService {
 	public Persona obtieneDireccion(long id) {
 
 		return null;
+	}
+
+	@Override
+	public void guardaPersona(Persona o) throws SQLException {
+		iPersonaDao.insertar(o);
 	}
 
 }

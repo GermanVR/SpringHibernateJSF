@@ -1,7 +1,7 @@
 package com.german.jsf.entidad;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NonNull;
 
 @Entity
 // @Getter
@@ -33,8 +34,11 @@ public class Persona {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_persona")
 	private long idPersona;
+
 	private String nombre;
+
 	private String apellidop;
+
 	private String apellidom;
 	private char sexo;
 	private int edad;
@@ -42,7 +46,7 @@ public class Persona {
 	// mappedBy: Nombre del campo Java
 
 	@OneToMany(mappedBy = "idPersona", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Direccion> direccion = new HashSet<>();
+	private List<Direccion> direccion = new ArrayList<>();
 
 	// @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, targetEntity =
 	// Curso.class)
