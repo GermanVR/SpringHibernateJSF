@@ -18,8 +18,6 @@ import com.german.jsf.entidad.Direccion;
 import com.german.jsf.entidad.Persona;
 import com.german.jsf.service.IPersonaService;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -47,6 +45,9 @@ public class PersonaBean implements Serializable {
 	}
 
 	public void obtieneTodos() {
+		if (lPersona == null) {
+			lPersona = new ArrayList<>();
+		}
 		this.lPersona = peps.obtieneListaPersonas();
 	}
 
@@ -63,8 +64,9 @@ public class PersonaBean implements Serializable {
 		return lPersona;
 	}
 
-	public String verificaSession() {
-		return "manager";
+	public String modificaPersona(Persona p) {
+		this.persona = p;
+		return "modificaP";
 	}
 
 	public List<Direccion> getlDireccion() {

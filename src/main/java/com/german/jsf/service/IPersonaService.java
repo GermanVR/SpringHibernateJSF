@@ -17,6 +17,4 @@ public interface IPersonaService {
 
 	public void eliminar(long id) throws SQLException;
 
-	public Persona obtieneDireccion(long id);
-
 }

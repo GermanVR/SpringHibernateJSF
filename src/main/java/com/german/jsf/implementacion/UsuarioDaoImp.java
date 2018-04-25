@@ -64,10 +64,10 @@ public class UsuarioDaoImp implements IUsuarioDao {
 	@Transactional(readOnly = true)
 	public Usuario validaUsuario(Usuario u) {
 		@SuppressWarnings("unchecked")
-		List<Usuario> lu = sf().createQuery("From Usuario where user = ? and password = ? and status =? ").
-				setParameter(0, u.getUser()).
-				setParameter(1, u.getPassword()).
-				setParameter(2, "A").
+		List<Usuario> lu = sf().createQuery("From Usuario where user = :user and password = :password and status = :status ").
+				setString("user", u.getUser()).
+				setString("password", u.getPassword()).
+				setString("status", "A").
 				list();
 		if (lu.size()>0) {
 			return lu.get(0);

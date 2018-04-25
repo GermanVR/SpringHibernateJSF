@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 
 <h:head>
-	<title>Agregar Persona</title>
+	<title>Modifica Persona</title>
 </h:head>
 <h:body>
 
@@ -15,7 +15,6 @@
 				<f:validateLength minimum="5" maximum="50" />
 			</h:inputText>
 			<h:messages for="nombre" style="color:red;" />
-
 
 			<h:outputLabel value="Apellido Paterno" />
 			<h:inputText id="apellidop" value="#{personaBean.persona.apellidop}" required="true" label="Apellido Paterno">
@@ -42,7 +41,7 @@
 			</h:selectOneMenu>
 			<br></br>
 			<h:commandButton action="#{personaBean.guardaPersona()}" value="Guardar" />
-			<h:commandButton action="index?faces-redirect=true" value="Regresar" />
+			<h:commandButton action="index" immediate="true" value="Regresar" />
 		</h:panelGrid>
 	</h:form>
 </h:body>

@@ -36,11 +36,6 @@ public class PersonaServiceImp implements IPersonaService {
 		iPersonaDao.eliminar(id);
 	}
 
-	@Override
-	public Persona obtieneDireccion(long id) {
-
-		return null;
-	}
 
 	@Override
 	public void guardaPersona(Persona o) throws SQLException {

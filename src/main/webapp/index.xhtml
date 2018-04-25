@@ -4,91 +4,102 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 
 <h:head>
-	<title>JSF 2.0 Hello World</title>
+	<title>Administracion de Personas</title>
 </h:head>
 <h:body>
 	<h:messages />
 	<f:event listener="#{usuarioBean.validaSession()}" type="preRenderView"></f:event>
-	<h:form>
-		<h2>Menu JSF</h2>
-		<h:commandButton actionListener="#{personaBean.obtieneTodos }" value="Listar" />
-		<h:commandButton action="#{personaBean.agregarPersona() }" value="Agregar" />
-		<h:commandButton action="#{personaBean.verificaSession() }" value="verifica" />
-		<h:commandButton action="#{personaBean.cerrarSession() }" value="Salir" />
-		<h:dataTable value="#{personaBean.lPersona}" var="per" border="1" bgcolor="Lime" rendered="#{personaBean.lPersona.size() > 0 eq true }">
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Id Persona" />
-				</f:facet>
-				<h:outputLabel value="#{per.idPersona }" />
-			</h:column>
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Nombre" />
-				</f:facet>
-				<h:outputLabel value="#{per.nombre }" />
-			</h:column>
+	<f:event listener="#{personaBean.obtieneTodos}" type="preRenderView"></f:event>
+	<div align="center">
+		<h:form>
+			<h2>Administracion</h2>
+			<h:commandButton style="display:none;" actionListener="#{personaBean.obtieneTodos }" value="Listar Personas" />
+			<h:commandButton action="#{personaBean.agregarPersona() }" value="Agregar Persona" />
+			<h:commandButton action="#{personaBean.cerrarSession() }" value="Salir" />
+			<h:dataTable width="90%" value="#{personaBean.lPersona}" style="align:center;" var="per" border="1" bgcolor="Aqua" rendered="#{personaBean.lPersona.size() > 0 eq true }">
 
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Apellido Materno" />
-				</f:facet>
-				<h:outputLabel value="#{per.apellidom }" />
-			</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Nombre" />
+					</f:facet>
+					<h:outputLabel value="#{per.nombre }" />
+				</h:column>
 
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Apellido Paterno" />
-				</f:facet>
-				<h:outputLabel value="#{per.apellidop }" />
-			</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Apellido Materno" />
+					</f:facet>
+					<h:outputLabel value="#{per.apellidom }" />
+				</h:column>
 
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Edad" />
-				</f:facet>
-				<h:outputLabel value="#{per.edad }" />
-			</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Apellido Paterno" />
+					</f:facet>
+					<h:outputLabel value="#{per.apellidop }" />
+				</h:column>
 
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Sexo" />
-				</f:facet>
-				<h:outputLabel value="#{per.sexo }" />
-			</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Edad" />
+					</f:facet>
+					<h:outputLabel value="#{per.edad }" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Sexo" />
+					</f:facet>
+					<h:outputLabel value="#{per.sexo }" />
+				</h:column>
 
 
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Direcciones" />
-				</f:facet>
-				<ui:repeat var="o" value="#{per.direccion}">
-					<h:panelGrid columns="2">
-						<h:outputLabel value="Ciudad:" />
-						<h:outputLabel value="#{o.ciudad }" />
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Direcciones" />
+					</f:facet>
+					<ui:repeat var="o" value="#{per.direccion}" varStatus="counntD">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Direccion: #{counntD.index+1}" />
+							<h:panelGrid columns="3">
+								<h:commandLink action="#{direccionBean.editaDireccion(o)}" value="Editar" />
+								<br></br>
+								<h:commandLink action="#{direccionBean.eliminaDireccion(o)}" value="Eliminar" />
+							</h:panelGrid>
+							<h:outputLabel value="Ciudad:" />
+							<h:outputLabel value="#{o.ciudad }" />
+							<h:outputLabel value="CP:" />
+							<h:outputLabel value="#{o.codigoPostal}" />
+							<h:outputLabel value="Municipio:" />
+							<h:outputLabel value="#{o.municipio }" />
+							<h:outputLabel value="Colonia:" />
+							<h:outputLabel value="#{o.colonia }" />
+							<h:outputLabel value="Telefono:" />
+							<h:outputLabel value="#{o.telefono }" />
+							<h:outputLabel value="Calle:" />
+							<h:outputLabel value="#{o.calle }" />
+						</h:panelGrid>
+						<h:panelGrid columns="2" width="100%" rendered="#{counntD.last eq 'false'}">
+							<hr></hr>
+						</h:panelGrid>
 
-						<h:outputLabel value="CP:" />
-						<h:outputLabel value="#{o.codigoPostal}" />
-						<h:outputLabel value="Municipio:" />
-						<h:outputLabel value="#{o.municipio }" />
-						<h:outputLabel value="Colonia:" />
-						<h:outputLabel value="#{o.colonia }" />
-						<h:outputLabel value="Telefono:" />
-						<h:outputLabel value="#{o.telefono }" />
-						<h:outputLabel value="Calle:" />
-						<h:outputLabel value="#{o.calle }" />
-					</h:panelGrid>
-					<hr></hr>
-				</ui:repeat>
+					</ui:repeat>
 
-			</h:column>
-			<h:column>
-				<f:facet name="header">
-					<h:outputLabel value="Accion" />
-				</f:facet>
-				<h:commandButton action="#{personaBean.eliminar(per)}" value="Eliminar" />
-			</h:column>
-		</h:dataTable>
-	</h:form>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputLabel value="Accion" />
+					</f:facet>
+					<div align="center">
+						<h:commandButton disabled="true" action="#{personaBean.eliminar(per)}" value="Eliminar Persona" />
+						<br></br>
+						<h:commandButton action="#{personaBean.modificaPersona(per)}" value="Modificar Persona" />
+						<br></br>
+						<h:commandButton  action="#{direccionBean.agregaDireccion(per)}" value="Agregar Direccion" />
+					</div>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+	</div>
 </h:body>
 </html>

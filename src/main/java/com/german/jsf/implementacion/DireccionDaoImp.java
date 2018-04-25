@@ -1,6 +1,5 @@
 package com.german.jsf.implementacion;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class DireccionDaoImp implements IDireccionDao {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Direccion obtenerPorId(Serializable id) {
+	public Direccion obtenerPorId(Long id) {
 		return (Direccion) sessionFactory.getCurrentSession().get(Direccion.class, id);
 	}
 
@@ -46,7 +45,7 @@ public class DireccionDaoImp implements IDireccionDao {
 
 	@Override
 	@Transactional
-	public void eliminar(Serializable id) throws SQLException {
+	public void eliminar(Long id) throws SQLException {
 		Direccion d = (Direccion) sessionFactory.getCurrentSession().get(Direccion.class, id);
 		if (d != null) {
 			sessionFactory.getCurrentSession().delete(d);
