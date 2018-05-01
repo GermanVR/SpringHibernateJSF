@@ -49,9 +49,6 @@ public class Direccion {
 
 	private String calle;
 
-	@Override
-	public String toString() {
-		return "Direccion [idDireccion=" + idDireccion + ", ciudad=" + ciudad + ", codigoPostal=" + codigoPostal + ", municipio=" + municipio + ", colonia=" + colonia + ", telefono=" + telefono + ", calle=" + calle + "]";
-	}
+	
 
 }

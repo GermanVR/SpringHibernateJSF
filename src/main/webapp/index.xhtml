@@ -1,105 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 
 <h:head>
 	<title>Administracion de Personas</title>
 </h:head>
 <h:body>
-	<h:messages />
-	<f:event listener="#{usuarioBean.validaSession()}" type="preRenderView"></f:event>
-	<f:event listener="#{personaBean.obtieneTodos}" type="preRenderView"></f:event>
+	<f:event listener="#{usuarioBean.validaSession}" type="preRenderView" />
+	<f:event listener="#{personaBean.obtieneTodos}" type="preRenderView" />
+	<p:growl id="msg" autoUpdate="true" showDetail="true" showSummary="false" life="3000" />
 	<div align="center">
+		<h2>Administracion | #{usuarioBean.usuario.name}</h2>
 		<h:form>
-			<h2>Administracion</h2>
-			<h:commandButton style="display:none;" actionListener="#{personaBean.obtieneTodos }" value="Listar Personas" />
-			<h:commandButton action="#{personaBean.agregarPersona() }" value="Agregar Persona" />
-			<h:commandButton action="#{personaBean.cerrarSession() }" value="Salir" />
-			<h:dataTable width="90%" value="#{personaBean.lPersona}" style="align:center;" var="per" border="1" bgcolor="Aqua" rendered="#{personaBean.lPersona.size() > 0 eq true }">
-
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Nombre" />
-					</f:facet>
-					<h:outputLabel value="#{per.nombre }" />
-				</h:column>
-
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Apellido Materno" />
-					</f:facet>
-					<h:outputLabel value="#{per.apellidom }" />
-				</h:column>
-
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Apellido Paterno" />
-					</f:facet>
-					<h:outputLabel value="#{per.apellidop }" />
-				</h:column>
-
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Edad" />
-					</f:facet>
-					<h:outputLabel value="#{per.edad }" />
-				</h:column>
-
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Sexo" />
-					</f:facet>
-					<h:outputLabel value="#{per.sexo }" />
-				</h:column>
-
-
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Direcciones" />
-					</f:facet>
-					<ui:repeat var="o" value="#{per.direccion}" varStatus="counntD">
-						<h:panelGrid columns="2">
-							<h:outputLabel value="Direccion: #{counntD.index+1}" />
-							<h:panelGrid columns="3">
-								<h:commandLink action="#{direccionBean.editaDireccion(o)}" value="Editar" />
-								<br></br>
-								<h:commandLink action="#{direccionBean.eliminaDireccion(o)}" value="Eliminar" />
-							</h:panelGrid>
-							<h:outputLabel value="Ciudad:" />
-							<h:outputLabel value="#{o.ciudad }" />
-							<h:outputLabel value="CP:" />
-							<h:outputLabel value="#{o.codigoPostal}" />
-							<h:outputLabel value="Municipio:" />
-							<h:outputLabel value="#{o.municipio }" />
-							<h:outputLabel value="Colonia:" />
-							<h:outputLabel value="#{o.colonia }" />
-							<h:outputLabel value="Telefono:" />
-							<h:outputLabel value="#{o.telefono }" />
-							<h:outputLabel value="Calle:" />
-							<h:outputLabel value="#{o.calle }" />
-						</h:panelGrid>
-						<h:panelGrid columns="2" width="100%" rendered="#{counntD.last eq 'false'}">
-							<hr></hr>
-						</h:panelGrid>
-
-					</ui:repeat>
-
-				</h:column>
-				<h:column>
-					<f:facet name="header">
-						<h:outputLabel value="Accion" />
-					</f:facet>
-					<div align="center">
-						<h:commandButton disabled="true" action="#{personaBean.eliminar(per)}" value="Eliminar Persona" />
-						<br></br>
-						<h:commandButton action="#{personaBean.modificaPersona(per)}" value="Modificar Persona" />
-						<br></br>
-						<h:commandButton  action="#{direccionBean.agregaDireccion(per)}" value="Agregar Direccion" />
-					</div>
-				</h:column>
-			</h:dataTable>
+			<p:commandButton style="display:none;" actionListener="#{personaBean.recarga}" value="Listar Personas" update=":frmindex:tper" />
 		</h:form>
+		<h:form id="frmindex">
+
+			<p:menubar>
+				<p:submenu style="margin-left:30px;" label="Personas">
+					<p:menuitem action="#{personaBean.setAccion('I')}" oncomplete="PF('wdialogo').show();" value="Agregar Persona" update="frmdialogo" />
+					<p:menuitem actionListener="#{personaBean.recarga }" value="Listar Personas" update="tper" />
+				</p:submenu>
+				<f:facet name="options">
+					<p:commandButton icon="ui-icon-power" value="Cerrar Session" actionListener="#{usuarioBean.cerrarSession}" action="index?faces-redirect=true" />
+				</f:facet>
+			</p:menubar>
+			<br />
+			<p:dataTable id="tper" value="#{personaBean.lPersona}" var="per" paginator="true" rowsPerPageTemplate="5,10,15" rows="3" currentPageReportTemplate="Pagina ({currentPage} de {totalPages})"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+				<p:column headerText="Nombre">
+					<p:outputLabel value="#{per.nombre }" />
+				</p:column>
+
+				<p:column headerText="Apellido Paterno">
+					<p:outputLabel value="#{per.apellidop }" />
+				</p:column>
+
+				<p:column headerText="Apellido Materno">
+					<p:outputLabel value="#{per.apellidom}" />
+				</p:column>
+
+				<p:column headerText="Edad" style="text-align:center;">
+					<p:outputLabel value="#{per.edad } Años" />
+				</p:column>
+
+				<p:column headerText="Sexo">
+					<p:outputLabel value="#{per.sexo}" converter="sexoConverter" />
+				</p:column>
+
+
+				<p:column headerText="Direcciones" width="40%">
+					<ui:repeat var="o" value="#{per.direccion}" varStatus="counntD">
+						<p:column>
+							<p:outputLabel value="Direccion: #{counntD.index+1} " />
+						</p:column>
+						<p:column>
+							<p:commandButton icon="ui-icon-pencil" action="#{direccionBean.editaDireccion(o)}" title="Editar" update=":dialogoDireccion" />
+							<p:commandButton icon="ui-icon-closethick" actionListener="#{direccionBean.eliminaDireccion(o)}" oncomplete="#{personaBean.obtieneTodos()}" title="Eliminar" update=":frmindex:tper" />
+						</p:column>
+						<br />
+						<p:column colspan="2">
+							<p:outputLabel value="#{o.ciudad} #{o.codigoPostal} #{o.municipio} #{o.colonia} 
+							#{o.telefono} #{o.calle}" />
+						</p:column>
+						<p:separator rendered="#{counntD.last eq false}" />
+					</ui:repeat>
+				</p:column>
+				<p:column headerText="Acciones">
+					<div align="center">
+						<p:commandButton icon="ui-icon-closethick" disabled="true" update="frmindex" action="#{personaBean.eliminar(per)}" title="Eliminar Persona" />
+						<br />
+						<p:commandButton icon="ui-icon-pencil" actionListener="#{personaBean.modificaPersona(per)}" oncomplete="PF('wdialogo').show();" update="dialogo" title="Modificar Persona" />
+						<br />
+						<p:commandButton icon="ui-icon-plus" actionListener="#{direccionBean.agregaDireccion(per)}" title="Agregar Direccion" update=":dialogoDireccion" />
+					</div>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog id="dialogo" widgetVar="wdialogo" header="Persona" modal="true" resizable="false" closeOnEscape="false" draggable="false">
+			<h:form id="frmdialogo">
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:outputLabel value="Nombre" />
+					<p:inputText id="nombre" value="#{personaBean.persona.nombre}" required="true" label="Nombre">
+						<f:validateLength minimum="5" maximum="50" />
+					</p:inputText>
+
+					<p:outputLabel value="Apellido Paterno" />
+					<p:inputText id="apellidop" value="#{personaBean.persona.apellidop}" required="true" label="Apellido Paterno">
+						<f:validateLength minimum="5" maximum="50" />
+					</p:inputText>
+
+					<p:outputLabel value="Apellido Materno" />
+					<p:inputText id="apellidom" value="#{personaBean.persona.apellidom}" required="true" label="Apelido Materno">
+						<f:validateLength minimum="5" maximum="50" />
+					</p:inputText>
+
+					<p:outputLabel value="Edad" />
+					<p:inputText id="edad" value="#{personaBean.persona.edad}" required="true" label="Edad">
+						<f:validateLongRange minimum="18" maximum="80" />
+					</p:inputText>
+
+					<p:outputLabel value="Sexo" />
+					<p:selectOneMenu id="sexo" value="#{personaBean.persona.sexo}" style="width:85%;">
+						<f:selectItem itemValue="H" itemLabel="HOMBRE" />
+						<f:selectItem itemValue="M" itemLabel="MUJER" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:separator />
+				<p:panelGrid columns="2" style="width:100%;" styleClass="ui-noborder">
+					<p:commandButton style="width:100%;" actionListener="#{personaBean.insertarPersona}" update=":frmindex" value="Insertar" oncomplete="PF('wdialogo').hide();"
+						rendered="#{personaBean.accion == 'I'}" />
+					<p:commandButton style="width:100%;" actionListener="#{personaBean.actualizarPersona}" update=":frmindex" value="Actualizar" oncomplete="PF('wdialogo').hide();"
+						rendered="#{personaBean.accion == 'A'}" />
+					<p:commandButton style="width:100%;" onclick="PF('wdialogo').hide();" immediate="true" value="Regresar" />
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogoDireccion" widgetVar="wdialogoDireccion" header="Direccion" modal="true" resizable="false" closeOnEscape="true" draggable="false">
+			<h:form id="frmdireccion">
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:column>Direccion</p:column>
+					<p:column>
+						<p:inputText id="iddireccion" value="#{direccionBean.dir.idDireccion}" required="true" />
+					</p:column>
+					<p:column>Persona</p:column>
+					<p:column>
+						<p:inputText id="idpersona" value="#{direccionBean.dir.idPersona}" required="true" />
+					</p:column>
+
+					<p:column>Ciudad</p:column>
+					<p:column>
+						<p:inputText placeholder="Introduce la Ciudad" id="ciudad" value="#{direccionBean.dir.ciudad}" required="true" label="Ciudad" />
+					</p:column>
+
+					<p:column>Codigo Postal</p:column>
+					<p:column>
+						<p:inputMask mask="99999" placeholder="Introduce el Codigo Postal" id="cp" value="#{direccionBean.dir.codigoPostal}" required="true" label="Codigo Postal">
+							<f:validateLength minimum="5" maximum="5" />
+						</p:inputMask>
+
+					</p:column>
+
+					<p:column>Municipio</p:column>
+					<p:column>
+						<p:inputText placeholder="Introduce el Municipio" id="municipio" value="#{direccionBean.dir.municipio}" required="true" label="Municipio" />
+					</p:column>
+
+					<p:column>Colonia</p:column>
+					<p:column>
+						<p:inputText placeholder="Introduce la Colonia" id="colonia" value="#{direccionBean.dir.colonia}" required="true" label="Colonia" />
+					</p:column>
+
+					<p:column>Telefono</p:column>
+					<p:column>
+						<p:inputMask placeholder="Introduce El Telefono" mask="9999999999" maxlength="10" id="telefono" value="#{direccionBean.dir.telefono}" required="true" label="Telefono" />
+					</p:column>
+
+					<p:column>Calle</p:column>
+					<p:column>
+						<p:inputText placeholder="Introduce la Calle" maxlength="250" id="calle" value="#{direccionBean.dir.calle}" required="true" label="Calle">
+							<f:validateLength minimum="5" maximum="250" />
+						</p:inputText>
+					</p:column>
+
+
+				</p:panelGrid>
+				<p:separator />
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:column>
+						<p:commandButton style="width:100%;" value="Registrar" actionListener="#{direccionBean.insertarDireccion}" oncomplete="PF('wdialogoDireccion').hide();" rendered="#{direccionBean.accion=='I'}"
+							update=":frmindex:tper" />
+						<p:commandButton style="width:100%;" value="Actualizar" actionListener="#{direccionBean.actualizarDireccion}" rendered="#{direccionBean.accion=='A'}" update=":frmindex:tper" />
+					</p:column>
+					<p:column>
+						<p:commandButton value="Cancelar" style="width:100%;" immediate="true" oncomplete="PF('wdialogoDireccion').hide();" />
+					</p:column>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</div>
 </h:body>
 </html>

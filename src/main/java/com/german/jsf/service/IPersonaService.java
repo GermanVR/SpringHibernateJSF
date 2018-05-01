@@ -9,12 +9,12 @@ public interface IPersonaService {
 
 	public List<Persona> obtieneListaPersonas();
 
-	public Persona obtienePorId(long id);
+	public Persona obtienePersonaPorId(long id);
 
-	public void guardaPersona(Persona o) throws SQLException;
+	public void insertarPersona(Persona o) throws SQLException;
 
-	public Persona actualizar(Persona p) throws SQLException;
+	public Persona actualizarPersona(Persona p) throws SQLException;
 
-	public void eliminar(long id) throws SQLException;
+	public void eliminarPersona(long id) throws SQLException;
 
 }

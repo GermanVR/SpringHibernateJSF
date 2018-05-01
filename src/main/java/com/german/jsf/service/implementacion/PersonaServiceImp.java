@@ -22,23 +22,23 @@ public class PersonaServiceImp implements IPersonaService {
 	}
 
 	@Override
-	public Persona obtienePorId(long id) {
+	public Persona obtienePersonaPorId(long id) {
 		return iPersonaDao.obtenerPorId(id);
 	}
 
 	@Override
-	public Persona actualizar(Persona p) throws SQLException {
+	public Persona actualizarPersona(Persona p) throws SQLException {
 		return iPersonaDao.actualizar(p);
 	}
 
 	@Override
-	public void eliminar(long id) throws SQLException {
+	public void eliminarPersona(long id) throws SQLException {
 		iPersonaDao.eliminar(id);
 	}
 
 
 	@Override
-	public void guardaPersona(Persona o) throws SQLException {
+	public void insertarPersona(Persona o) throws SQLException {
 		iPersonaDao.insertar(o);
 	}
 

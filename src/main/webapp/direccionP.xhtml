@@ -1,74 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<title>Administrar Direccion</title>
 </h:head>
 <h:body>
 
-	<h:form rendered="#{usuarioBean.validaSession()}">
+	<f:event listener="#{usuarioBean.validaSession()}" type="preRenderView" />
+	<f:event listener="#{direccionBean.validaPersona()}" type="preRenderView" />
+	<h:form id="form">
 		<h:panelGrid columns="3">
-			<h:outputLabel style="display:none;" value="idDirecion" />
-			<h:inputText id="idDireccion" style="display:none;" value="#{direccionBean.dir.idDireccion}" disabled="true" required="true" label="Id Direccion">
+			<p:outputLabel value="idDirecion" />
+			<p:inputText id="idDireccion" value="#{direccionBean.dir.idDireccion}" disabled="true" required="true" label="Id Direccion">
 				<f:validateLength minimum="1" />
-			</h:inputText>
-			<h:messages for="idDireccion" style="color:red;" />
+			</p:inputText>
+			<p:messages for="idDireccion" style="color:red;" />
 
 
-			<h:outputLabel style="display:none;" value="Id Persona" />
-			<h:inputText style="display:none;" id="idPersona" value="#{direccionBean.dir.idPersona}" required="true" disabled="true" label="Id Persona">
+			<p:outputLabel value="Id Persona" />
+			<p:inputText id="idPersona" value="#{direccionBean.dir.idPersona}" required="true" disabled="true" label="Id Persona">
 				<f:validateLength minimum="1" />
-			</h:inputText>
-			<h:messages for="idPersona" style="color:red;" />
+			</p:inputText>
+			<p:messages for="idPersona" style="color:red;" />
 
-			<h:outputLabel value="Ciudad" />
-			<h:inputText id="ciudad" value="#{direccionBean.dir.ciudad}" required="true" label="Ciudad">
+			<p:outputLabel value="Ciudad" />
+			<p:inputText id="ciudad" value="#{direccionBean.dir.ciudad}" required="true" label="Ciudad">
 				<f:validateLength minimum="5" maximum="50" />
-			</h:inputText>
-			<h:messages for="ciudad" style="color:red;" />
+			</p:inputText>
+			<p:messages for="ciudad" style="color:red;" />
 
-			<h:outputLabel value="Codigo Postal" />
-			<h:inputText id="codigoPostal" value="#{direccionBean.dir.codigoPostal}" required="true" label="Codigo Postal">
+			<p:outputLabel value="Codigo Postal" />
+			<p:inputText id="codigoPostal" value="#{direccionBean.dir.codigoPostal}" required="true" label="Codigo Postal">
 				<f:validateLength maximum="5" minimum="5" />
-			</h:inputText>
-			<h:messages for="codigoPostal" style="color:red;" />
+			</p:inputText>
+			<p:messages for="codigoPostal" style="color:red;" />
 
-			<h:outputLabel value="Municipio" />
-			<h:inputText id="municipio" value="#{direccionBean.dir.municipio}" required="true" label="Municipio">
+			<p:outputLabel value="Municipio" />
+			<p:inputText id="municipio" value="#{direccionBean.dir.municipio}" required="true" label="Municipio">
 				<f:validateLength maximum="50" minimum="5" />
-			</h:inputText>
-			<h:messages for="municipio" style="color:red;" />
+			</p:inputText>
+			<p:messages for="municipio" style="color:red;" />
 
 
-			<h:outputLabel value="Colonia" />
-			<h:inputText id="colonia" value="#{direccionBean.dir.colonia}" required="true" label="Colonia">
+			<p:outputLabel value="Colonia" />
+			<p:inputText id="colonia" value="#{direccionBean.dir.colonia}" required="true" label="Colonia">
 				<f:validateLength minimum="10" maximum="200" />
-			</h:inputText>
-			<h:messages for="colonia" style="color:red;" />
+			</p:inputText>
+			<p:messages for="colonia" style="color:red;" />
 
 
-			<h:outputLabel value="Telefono" />
-			<h:inputText id="telefono" value="#{direccionBean.dir.telefono}" required="true" label="Telefono">
+			<p:outputLabel value="Telefono" />
+			<p:inputText id="telefono" value="#{direccionBean.dir.telefono}" required="true" label="Telefono">
+
 				<f:validateLength minimum="10" maximum="12" />
-			</h:inputText>
-			<h:messages for="telefono" style="color:red;" />
+			</p:inputText>
+			<p:messages for="telefono" style="color:red;" />
 
 
-			<h:outputLabel value="Calle" />
-			<h:inputText id="calle" value="#{direccionBean.dir.calle}" required="true" label="Calle">
+			<p:outputLabel value="Calle" />
+			<p:inputText id="calle" value="#{direccionBean.dir.calle}" required="true" label="Calle">
 				<f:validateLength minimum="10" maximum="200" />
-			</h:inputText>
-			<h:messages for="calle" style="color:red;" />
-		</h:panelGrid>
-		<h:panelGrid rendered="#{direccionBean.dir.idDireccion eq 0}" columns="2">
-			<h:commandButton action="#{direccionBean.insertarDireccion()}" value="Insertar" />
-			<h:commandButton action="index" immediate="true" value="Regresar" />
-		</h:panelGrid>
-		<h:panelGrid rendered="#{direccionBean.dir.idDireccion > 0}" columns="2">
-			<h:commandButton action="#{direccionBean.guardaDireccion()}" value="Guardar" />
-			<h:commandButton action="index" immediate="true" value="Regresar" />
+			</p:inputText>
+			<p:messages for="calle" style="color:red;" />
+			<p:panelGrid rendered="#{direccionBean.dir.idDireccion eq 0}">
+				<p:commandButton update="form" action="#{direccionBean.insertarDireccion()}" value="Insertar" style="width:100%;" />
+			</p:panelGrid>
+			<p:panelGrid rendered="#{direccionBean.dir.idDireccion > 0}">
+				<p:commandButton action="#{direccionBean.guardaDireccion()}" value="Guardar" style="width:100%;" />
+			</p:panelGrid>
+			<p:commandButton action="index?faces-redirect=true" immediate="true" value="Regresar" style="width:100%;" />
+			<p:column />
+
 		</h:panelGrid>
 	</h:form>
 </h:body>

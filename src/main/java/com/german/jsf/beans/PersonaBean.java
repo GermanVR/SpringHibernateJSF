@@ -1,13 +1,13 @@
 package com.german.jsf.beans;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,13 @@ import com.german.jsf.entidad.Direccion;
 import com.german.jsf.entidad.Persona;
 import com.german.jsf.service.IPersonaService;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @ManagedBean
-@SessionScoped
+@ViewScoped
 @Slf4j
 public class PersonaBean implements Serializable {
 
@@ -32,45 +34,62 @@ public class PersonaBean implements Serializable {
 	@Qualifier("personaService")
 	private IPersonaService peps;
 
-	private List<Persona> lPersona;
-	private List<Direccion> lDireccion;
-	private Persona persona = new Persona();
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
-	}
-
-	public Persona getPersona() {
-		return this.persona;
-	}
-
-	public void obtieneTodos() {
-		if (lPersona == null) {
-			lPersona = new ArrayList<>();
-		}
-		this.lPersona = peps.obtieneListaPersonas();
-	}
-
-	public String agregarPersona() {
-		return "agregarP";
-	}
-
-	public void eliminar(Persona p) throws SQLException {
-		peps.eliminar(p.getIdPersona());
-		this.obtieneTodos();
-	}
+	private List<Persona> lPersona = new ArrayList<>();
 
 	public List<Persona> getlPersona() {
 		return lPersona;
 	}
 
-	public String modificaPersona(Persona p) {
-		this.persona = p;
-		return "modificaP";
+	private String accion;
+
+	public String getAccion() {
+		return accion;
 	}
 
-	public List<Direccion> getlDireccion() {
-		return lDireccion;
+	public void setAccion(String accion) {
+		this.accion = accion;
+		if (accion.equals("I")) {
+			persona = new Persona();
+		}
+		log.info("Accion es: " + accion);
+	}
+
+	@Getter
+	private List<Direccion> lDireccion;
+
+	@Setter
+	@Getter
+	private Persona persona;
+
+	public void recarga() {
+		obtieneTodos();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Lista Recargada Correctamente..."));
+	}
+
+	public void obtieneTodos() {
+		log.info("Entro en ObtieneTodos");
+		this.lPersona = peps.obtieneListaPersonas();
+	}
+
+	public String agregarPersona() {
+		return "agregarP?faces-redirect=true";
+	}
+
+	public void eliminar(Persona p) throws SQLException {
+		peps.eliminarPersona(p.getIdPersona());
+//		this.obtieneTodos();
+	}
+
+	public void preparaPersona() {
+		setAccion("I");
+	}
+
+	public void modificaPersona(Persona p) {
+		log.info("Entro en Modificar y PErsona vale: {}", p);
+		this.persona = p;
+		setAccion("A");
+		log.info("Accion Vale: " + accion);
+		// return "modificaP?faces-redirect=true";
 	}
 
 	public List<Direccion> obtieneDireccion(Persona p) {
@@ -81,20 +100,28 @@ public class PersonaBean implements Serializable {
 		return lDireccion;
 	}
 
-	public void cerrarSession() throws IOException {
-		log.info("Cerrando Session");
-		if (lPersona != null) {
-			lPersona.clear();
+	public void insertarPersona() {
+		try {
+			peps.insertarPersona(this.persona);
+			this.obtieneTodos();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Persona", "Persona Insertada Correctamente"));
+		} catch (SQLException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Persona", "Error al Insertar Persona"));
 		}
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?faces-redirect=true");
-		// return "login?faces-redirect=true";
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		// return "index?faces-redirect=true";
 	}
 
-	public String guardaPersona() throws SQLException {
-		peps.guardaPersona(this.persona);
-		this.obtieneTodos();
-		persona = new Persona();
-		return "index?faces-redirect=true";
+	public void actualizarPersona() {
+		try {
+			peps.actualizarPersona(this.persona);
+//			this.obtieneTodos();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Persona", "Persona Actualizada Correctamente"));
+		} catch (SQLException e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Persona", "Error al Actualizar Persona"));
+		}
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+		// return "index?faces-redirect=true";
 	}
+
 }

@@ -7,8 +7,9 @@
 	<title>Agregar Persona</title>
 </h:head>
 <h:body>
+	<f:event listener="#{usuarioBean.validaSession()}" type="preRenderView" />
 
-	<h:form rendered="#{usuarioBean.validaSession()}">
+	<h:form>
 		<h:panelGrid columns="3">
 			<h:outputLabel value="Nombre" />
 			<h:inputText id="nombre" value="#{personaBean.persona.nombre}" required="true" label="Nombre">
@@ -41,8 +42,8 @@
 				<f:selectItem itemValue="M" itemLabel="Mujer" />
 			</h:selectOneMenu>
 			<br></br>
-			<h:commandButton action="#{personaBean.guardaPersona()}" value="Guardar" />
-			<h:commandButton action="index?faces-redirect=true" value="Regresar" />
+			<h:commandButton actionListener="#{personaBean.insertarPersona}" value="Guardar" />
+			<h:commandButton action="index?faces-redirect=true" immediate="true" value="Regresar" />
 		</h:panelGrid>
 	</h:form>
 </h:body>

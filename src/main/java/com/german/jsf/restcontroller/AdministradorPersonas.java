@@ -34,7 +34,7 @@ public class AdministradorPersonas {
 
 	@RequestMapping(value = "/id", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public String obtienePorId(long id) {
-		Persona o = personaService.obtienePorId(id);
+		Persona o = personaService.obtienePersonaPorId(id);
 		log.info("El resultado es: {}", o);
 		if (o == null) {
 			return "No existe la Persona";
